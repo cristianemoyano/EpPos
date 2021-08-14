@@ -79,7 +79,8 @@ def current_order_item(request, item_id):
         return JsonResponse(serializer.data, safe=False)
 
     elif request.method == 'PUT':
-        product = get_object_or_404(Product, id=item_id)
+        # Enter By Code 
+        product = get_object_or_404(Product, code=item_id)
 
         if product.stock_applies:
             if product.stock < 1 and not get_can_negative_stock():
