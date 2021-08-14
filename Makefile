@@ -1,5 +1,5 @@
 up: build
-	docker-compose up -d
+	docker-compose up
 
 build:
 	mkdir -p web/db
@@ -16,3 +16,12 @@ clean: stop
 	docker-compose rm
 
 rebuild: clean build up
+
+shell:
+	docker-compose run web bash
+
+migrations:
+	docker-compose exec web ./manage.py makemigrations
+
+migrate:
+	docker-compose exec web ./manage.py migrate
