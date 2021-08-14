@@ -13,6 +13,13 @@ settings_local.py which is imported from here.
 
 import os
 
+from environ import Env
+
+env = Env()
+
+# reading .env file
+env.read_env(env_file=".env")
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -77,10 +84,11 @@ WSGI_APPLICATION = 'EpPos2.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'sqlite': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db', 'db.sqlite3'),
-    }
+    },
+    'default': env.db(),
 }
 
 

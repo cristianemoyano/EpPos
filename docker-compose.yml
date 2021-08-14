@@ -29,6 +29,8 @@ services:
       - db
     links:
       - db:db
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
   pgadmin:
     image: dpage/pgadmin4:4.18
     restart: always
