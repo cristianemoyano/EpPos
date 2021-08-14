@@ -1,6 +1,9 @@
 up: build
 	docker-compose up
 
+start:
+	docker-compose up
+
 build:
 	mkdir -p web/db
 	docker-compose build

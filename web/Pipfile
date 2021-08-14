@@ -1,0 +1,16 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+ipdb = "*"
+
+[packages]
+gunicorn = "~=20.1.0"
+djangorestframework = "~=3.12.4"
+Django = "~=3.2.6"
+Pillow = "~=8.3.1"
+
+[requires]
+python_version = "3.8"
