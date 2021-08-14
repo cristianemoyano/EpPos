@@ -1,14 +1,12 @@
-up: build
-	docker-compose up
-
-start:
-	docker-compose up
+up:
+	docker-compose up --remove-orphans
 
 build:
 	mkdir -p web/db
 	docker-compose build
+
 	
-setup: build up
+superuser:
 	docker-compose exec web ./manage.py createsuperuser
 
 stop:
@@ -28,3 +26,6 @@ migrations:
 
 migrate:
 	docker-compose exec web ./manage.py migrate
+
+ipdb:
+	docker-compose run --service-ports web

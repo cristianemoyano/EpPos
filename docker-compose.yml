@@ -1,34 +1,48 @@
-version: '3'
+version: "3.3"
+
 services:
-  web:
-    restart: always
-    build: ./web
-    expose:
-      - "8000"
+  db:
+    stdin_open: true
+    tty: true
+    image: postgres:12
     volumes:
-      - data:/usr/src/app/db
-    environment:
-      DEBUG: 'false'
-    command: gunicorn EpPos2.wsgi:application -w 2 -b :8000
-    networks:
-      - backlink
-  
-  nginx:
-    restart: always
-    build: ./docker/nginx/
+      - postgres_data:/var/lib/postgresql/data/
+    expose:
+      - "5432"
     ports:
-      - "80:80"
-    links:
-      - web:web
-    networks:
-      - backlink
+      - "5432:5432"
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  web:
+    stdin_open: true
+    tty: true
+    build: ./web
+    command: python web/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/web
+    ports:
+      - "8000:8000"
     depends_on:
-      - web
+      - db
+    links:
+      - db:db
+  pgadmin:
+    image: dpage/pgadmin4:4.18
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@linuxhint.com
+      PGADMIN_DEFAULT_PASSWORD: secret
+      PGADMIN_LISTEN_PORT: 8080
+    ports:
+      - "8081:8081"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    links:
+      - "db:pgsql-server"
 
 volumes:
-  data:
-    driver: local
-
-networks:
-  backlink:
-    driver: bridge
+  postgres_data:
+  pgadmin_data:
